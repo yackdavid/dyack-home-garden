@@ -5,6 +5,10 @@
 #include <string.h>
 #include <IRremote.hpp>
 
+/* Fan Controls */
+const int fan_control_pin1 = 3;
+const int fan_control_pin2 = 5;
+
 /* Application behavior */
 const int PAD_LEFT                = 0;
 const int PAD_RIGHT               = 1;
@@ -307,6 +311,10 @@ void ir_tasks()
  */
 void setup()
 {
+  // Fans
+  pinMode(fan_control_pin1, OUTPUT);
+  pinMode(fan_control_pin2, OUTPUT);
+  
   // Initialized serial connection
   Serial.begin( BAUD_RATE );
   Serial.println( "Initializing..." );
@@ -330,7 +338,15 @@ void setup()
  * This function is ran in an endless loop while the microcontroller is running
  */
 void loop()
+{   
+  if(humidity > 70) 
 {
+    digitalWrite(fan_control_pin2,HIGH);
+  } else {
+    digitalWrite(fan_control_pin2,LOW);
+  }
+  
+  
   environment_tasks();
   datetime_tasks();
   ir_tasks();
